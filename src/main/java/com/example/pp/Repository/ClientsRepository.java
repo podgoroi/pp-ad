@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface ClientsRepository extends JpaRepository<Clients, Long> {
-    String phoneFind(String phone);
+    Clients phoneFind(String phone);
     List<Clients> findByMessageSendFalse();
 }

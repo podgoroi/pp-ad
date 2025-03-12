@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.cloud.openfeign.FeignAutoConfiguration;
 
 @SpringBootApplication
-@EnableFeignClients(basePackages = "com.example.pp.FeignClientss")
+@EnableFeignClients
 public class PpApplication {
 
     public static void main(String[] args) {

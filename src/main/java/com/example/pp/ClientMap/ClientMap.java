@@ -6,16 +6,16 @@ import com.example.pp.ClientsDto.Message;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ClientMap {
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "messageSend", ignore = true)
+    @Mapping(target = "fullName", expression = "java(clientsInfo.getName() + \" \" + clientsInfo.getSurname())") // Объединяем имя и фамилию
+    @Mapping(target = "phone", source = "phone") // Маппинг номера телефона
+    @Mapping(target = "birthday", source = "birthday") // Маппинг даты рождения
+    @Mapping(target = "messageSend", constant = "false") // Устанавливаем значение по умолчанию
     Clients clientsInfo(ClientsInfo clientsInfo);
 
-    Message messageInfo(Clients clients, String message);
-
     default String toSmsMessage(Clients clients, String discount) {
-        return String.format("%s, в этом месяце для вас действует скидка %s", clients.getFirstName(), discount);
+        return String.format("%s, в этом месяце для вас действует скидка %s", clients.getFullName(), discount);
     }
 }

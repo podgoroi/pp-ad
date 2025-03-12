@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -17,14 +14,59 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Clients {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
-    @Column(name = "phone")
+    private Long id;
+
+    @Column(name = "full_name", length = 255)
+    private String fullName;
+
+    @Column(name = "phone", length = 255)
     private String phone;
-    @Column(name = "first_name")
-    private String firstName;
-    @Column(name = "message_send")
-    private boolean messageSend;
+
     @Column(name = "birthday")
     private LocalDate birthday;
+
+    @Column(name = "message_send")
+    private Boolean messageSend;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
+    }
+
+    public Boolean getMessageSend() {
+        return messageSend;
+    }
+
+    public void setMessageSend(Boolean messageSend) {
+        this.messageSend = messageSend;
+    }
 }

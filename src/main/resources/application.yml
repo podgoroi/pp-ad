@@ -1,9 +1,4 @@
 spring:
-  cloud:
-    openfeign:
-      clients:
-        fcl:
-
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:1234/postgres

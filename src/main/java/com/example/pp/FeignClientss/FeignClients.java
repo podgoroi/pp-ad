@@ -15,4 +15,3 @@ public interface FeignClients {
     @PostMapping("/api/v1/getClient/{clientid}")
     ClientsInfo getClientById(@PathVariable("clientid") String clientid);
 }
-// ddssd

@@ -7,9 +7,7 @@ import com.example.pp.ClientsDto.Message;
 import com.example.pp.FeignClientss.FeignClients;
 import com.example.pp.ClientMap.ClientMap;
 import com.example.pp.Repository.ClientsRepository;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,8 +23,7 @@ import java.time.ZoneId;
 import java.util.List;
 
 @Service
-@Data
-@RequiredArgsConstructor
+@Getter
 @Slf4j
 public class ClientServiceImpl implements ClientService{
 
@@ -35,6 +32,13 @@ public class ClientServiceImpl implements ClientService{
     private final ClientsRepository clientsRepository;
     private final ClientMap mapper;
     private final KafkaTemplate<String, Message> kafkaTemplate;
+
+    public ClientServiceImpl(FeignClients fcl, ClientsRepository clientsRepository, ClientMap mapper, KafkaTemplate<String, Message> kafkaTemplate) {
+        this.fcl = fcl;
+        this.clientsRepository = clientsRepository;
+        this.mapper = mapper;
+        this.kafkaTemplate = kafkaTemplate;
+    }
 
     @Value("${discount}")
     private String discount;
