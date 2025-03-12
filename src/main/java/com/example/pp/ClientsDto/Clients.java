@@ -24,7 +24,7 @@ public class Clients {
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "message_send")
-    private String messageSend;
+    private boolean messageSend;
     @Column(name = "birthday")
     private LocalDate birthday;
 }

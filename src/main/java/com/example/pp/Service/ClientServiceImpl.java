@@ -9,16 +9,25 @@ import com.example.pp.ClientMap.ClientMap;
 import com.example.pp.Repository.ClientsRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.Month;
+import java.time.ZoneId;
 import java.util.List;
 
 @Service
 @Data
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Slf4j
 public class ClientServiceImpl implements ClientService{
 
     private final Month monthNow = LocalDate.now().getMonth();
@@ -26,6 +35,14 @@ public class ClientServiceImpl implements ClientService{
     private final ClientsRepository clientsRepository;
     private final ClientMap mapper;
     private final KafkaTemplate<String, Message> kafkaTemplate;
+
+    @Value("${discount}")
+    private String discount;
+
+    private boolean shouldSendMessage() {
+        return LocalTime.now(ZoneId.of("Europe/Moscow")).isBefore(LocalTime.of(19, 0));
+    }
+
     @Override
     public void findAllClientsByPhoneNumber() {
         try{
@@ -35,7 +52,17 @@ public class ClientServiceImpl implements ClientService{
                         && client.getBirthday().getMonth() == monthNow
                         && clientsRepository.phoneFind(client.getPhone()) == null) {
                     Clients clients = mapper.clientsInfo(client);
-                    clientsRepository.saveAndFlush(clients);
+                    clientsRepository.save(clients);
+                }
+            }
+            if (shouldSendMessage()) {
+                List<Clients> messageSendFalse = clientsRepository.findByMessageSendFalse();
+                for (Clients client : messageSendFalse) {
+                    String message = mapper.toSmsMessage(client, discount);
+                    Message smsMessage = new Message(message, client.getPhone());
+                    kafkaTemplate.send("topic",smsMessage);
+                    client.setMessageSend(true);
+                    clientsRepository.save(client);
                 }
             }
         } catch (Exception e) {
@@ -50,7 +77,7 @@ public class ClientServiceImpl implements ClientService{
             if (clientsInfo != null && clientsInfo.getPhone().endsWith("7")
                     && clientsInfo.getBirthday().getMonth() == monthNow) {
                 Clients clients = mapper.clientsInfo(clientsInfo);
-                clientsRepository.saveAndFlush(clients);
+                clientsRepository.save(clients);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

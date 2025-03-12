@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
-@FeignClient(url = "localhost:8081", name = "clients")
+@FeignClient(url = "http://localhost:8081", name = "clients")
 public interface FeignClients {
     @PostMapping("/api/v1/getClient")
     List<ClientsInfo> getClients();
