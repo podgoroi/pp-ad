@@ -1,6 +1,7 @@
 package com.example.pp.Controller;
 
 
+import com.example.pp.ClientsDto.ClientsInfo;
 import com.example.pp.Service.ClientService;
 import com.example.pp.Service.ClientServiceImpl;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/client")
@@ -21,13 +24,13 @@ public class Controller {
         this.clientServiceImpl = clientServiceImpl;
     }
 
-    @GetMapping("getClient")
-    public void getClients() {
-        clientServiceImpl.findAllClientsByPhoneNumber();
+    @GetMapping("http://localhost:8081/api/v1/client/getClient")
+    public List<ClientsInfo> getClients() {
+        return clientServiceImpl.findAllClientsByPhoneNumber();
     }
 
-    @GetMapping("/{clientId}")
-    public void getClientId(@PathVariable String clientId) {
-        clientServiceImpl.findClientById(clientId);
+    @GetMapping("http://localhost:8081/api/v1/client/{clientId}")
+    public ClientsInfo getClientId(@PathVariable String clientId) {
+        return clientServiceImpl.findClientById(clientId);
     }
 }

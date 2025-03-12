@@ -1,3 +1,4 @@
+
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -18,3 +19,5 @@ spring:
         format_sql: true
 
 discount: 15%
+server:
+  port: 8081

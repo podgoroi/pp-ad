@@ -1,10 +1,10 @@
 package com.example.pp.ClientsDto;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity

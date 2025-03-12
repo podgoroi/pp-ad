@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
@@ -48,13 +47,13 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
-    public void findAllClientsByPhoneNumber() {
+    public List<ClientsInfo> findAllClientsByPhoneNumber() {
         try{
             List<ClientsInfo> listClietns = fcl.getClients();
             for (ClientsInfo client : listClietns) {
                 if (client != null && client.getPhone().endsWith("7")
                         && client.getBirthday().getMonth() == monthNow
-                        && clientsRepository.phoneFind(client.getPhone()) == null) {
+                        && clientsRepository.findClientsByPhone(client.getPhone()) == null) {
                     Clients clients = mapper.clientsInfo(client);
                     clientsRepository.save(clients);
                 }
@@ -69,13 +68,14 @@ public class ClientServiceImpl implements ClientService{
                     clientsRepository.save(client);
                 }
             }
+            return listClietns;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void findClientById(String id) {
+    public ClientsInfo findClientById(String id) {
         try {
             ClientsInfo clientsInfo = fcl.getClientById(id);
             if (clientsInfo != null && clientsInfo.getPhone().endsWith("7")
@@ -83,6 +83,7 @@ public class ClientServiceImpl implements ClientService{
                 Clients clients = mapper.clientsInfo(clientsInfo);
                 clientsRepository.save(clients);
             }
+            return clientsInfo;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
