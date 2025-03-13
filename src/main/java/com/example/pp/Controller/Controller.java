@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/client")
+@RequestMapping("/api/v1")
 public class Controller {
 
     private final ClientServiceImpl clientServiceImpl;
@@ -24,12 +24,12 @@ public class Controller {
         this.clientServiceImpl = clientServiceImpl;
     }
 
-    @GetMapping("http://localhost:8081/api/v1/client/getClient")
+    @GetMapping("/getClient")
     public List<ClientsInfo> getClients() {
         return clientServiceImpl.findAllClientsByPhoneNumber();
     }
 
-    @GetMapping("http://localhost:8081/api/v1/client/{clientId}")
+    @GetMapping("/{clientId}")
     public ClientsInfo getClientId(@PathVariable String clientId) {
         return clientServiceImpl.findClientById(clientId);
     }
