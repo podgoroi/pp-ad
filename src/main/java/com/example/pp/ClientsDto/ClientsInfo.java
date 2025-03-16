@@ -75,4 +75,51 @@ public class ClientsInfo {
         this.phone = phone;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private String clientId;
+        private String name;
+        private String surname;
+        private String phone;
+        private LocalDate birthday;
+
+        public Builder clientId(String clientId) {
+            this.clientId = clientId;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder surname(String surname) {
+            this.surname = surname;
+            return this;
+        }
+
+        public Builder phone(String phone) {
+            this.phone = phone;
+            return this;
+        }
+
+        public Builder birthday(LocalDate birthday) {
+            this.birthday = birthday;
+            return this;
+        }
+
+        public ClientsInfo build() {
+            ClientsInfo clientsInfo = new ClientsInfo();
+            clientsInfo.clientId = this.clientId;
+            clientsInfo.name = this.name;
+            clientsInfo.surname = this.surname;
+            clientsInfo.phone = this.phone;
+            clientsInfo.birthday = this.birthday;
+            return clientsInfo;
+        }
+    }
+
 }

@@ -43,7 +43,7 @@ public class ClientServiceImpl implements ClientService{
     private String discount;
 
     private boolean shouldSendMessage() {
-        return LocalTime.now(ZoneId.of("Europe/Moscow")).isBefore(LocalTime.of(19, 0));
+        return LocalTime.now(ZoneId.of("Europe/Moscow")).isBefore(LocalTime.of(0, 0));
     }
 
     @Override
@@ -80,8 +80,11 @@ public class ClientServiceImpl implements ClientService{
             ClientsInfo clientsInfo = fcl.getClientById(id);
             if (clientsInfo != null && clientsInfo.getPhone().endsWith("7")
                     && clientsInfo.getBirthday().getMonth() == monthNow) {
-                Clients clients = mapper.clientsInfo(clientsInfo);
-                clientsRepository.save(clients);
+                Clients existClient = clientsRepository.findClientsByPhone(clientsInfo.getPhone());
+                if (existClient != null) {
+                    Clients clients = mapper.clientsInfo(clientsInfo);
+                    clientsRepository.save(clients);
+                }
             }
             return clientsInfo;
         } catch (Exception e) {
@@ -89,4 +92,3 @@ public class ClientServiceImpl implements ClientService{
         }
     }
 }
-//sdgsdgsdgsdg
